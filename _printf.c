@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdarg.h>
 #include "main.h"
 
 /**
@@ -12,12 +9,9 @@
 
 int _printf(const char *format, ...)
 {
-	int i = 0;
-	int num_arguments_printed = 0;
+	int i = 0, num_arguments_printed = 0;
 	char ch, *str_arg;
-
 	va_list args;
-
 	va_start(args, format);
 
 	while (format != NULL && format[i] != '\0')
@@ -25,28 +19,27 @@ int _printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			i++;
-
-			switch(format[i])
+			if (format[i] == 'c')
 			{
-				case 'c':
-					ch = (char)va_arg(args, int);
-					putchar(ch);
-					num_arguments_printed++;
-					break;
-				case 's':
-					str_arg = va_arg(args, char*);
-					fputs(str_arg, stdout);
-					num_arguments_printed += strlen(str_arg);
-					break;
-				case '%':
-					putchar('%');
-					num_arguments_printed++;
-					break;
-				default:
-					putchar('%');
-					putchar(format[i]);
-					num_arguments_printed += 2;
-					break;
+				ch = (char)va_arg(args, int);
+				putchar(ch);
+				num_arguments_printed++;
+			}
+			else if (format[i] == 's')
+			{
+				str_arg = va_arg(args, char*);
+				fputs(str_arg, stdout);
+				num_arguments_printed += strlen(str_arg);
+			}
+			else if (format[i] == '%')
+			{
+				putchar('%');
+				num_arguments_printed++;
+			}
+			else
+			{
+				putchar(format[i]);
+				num_arguments_printed++;
 			}
 		}
 		else
@@ -56,8 +49,6 @@ int _printf(const char *format, ...)
 		}
 	i++;
 	}
-
 	va_end(args);
-
 	return (num_arguments_printed);
 }
