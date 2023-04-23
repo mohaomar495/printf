@@ -10,42 +10,34 @@
 int _printf(const char *format, ...)
 {
 	int i = 0, num_arguments_printed = 0;
-	char ch, *str_arg;
-	va_list args;
-	va_start(args, format);
+	va_list ap;
+	int (*specifiers)(va_list) = NULL;
 
-	while (format != NULL && format[i] != '\0')
+	if ((format == NULL) || (format[0] == '%' && format[1] == '\0'))
+		return (-1);
+	va_start(ap, format);
+	while (format[i])
 	{
-		if (format[i] == '%')
+		if (format[i] == '%' && format[i + 1] != '%')
 		{
 			i++;
-			if (format[i] == 'c')
+			specifiers = get_specifier(format);
+			if (format[i] == '\0')
+				return (-1);
+			else if (specifiers == NULL)
 			{
-				ch = (char)va_arg(args, int);
-				putchar(ch);
-				num_arguments_printed++;
-			}
-			else if (format[i] == 's')
-			{
-				str_arg = va_arg(args, char*);
-				if (str_arg == NULL)
-				{
-					printf("(null)");
-				}
-				fputs(str_arg, stdout);
-				num_arguments_printed += strlen(str_arg);
-			}
-			else if (format[i] == '%')
-			{
-				putchar('%');
-				num_arguments_printed++;
-			}
-			else
-			{
-				putchar('%');
+				putchar(format[i - 1]);
 				putchar(format[i]);
 				num_arguments_printed += 2;
 			}
+			else
+				num_arguments_printed += specifiers(ap);
+		}
+		else if (format[i] == '%' && format[i + 1] == '%')
+		{
+			i++;
+			putchar('%');
+			num_arguments_printed++;
 		}
 		else
 		{
@@ -54,6 +46,6 @@ int _printf(const char *format, ...)
 		}
 	i++;
 	}
-	va_end(args);
+	va_end(ap);
 	return (num_arguments_printed);
 }
