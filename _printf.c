@@ -38,8 +38,9 @@ int _printf(const char *format, ...)
 			}
 			else
 			{
+				putchar('%');
 				putchar(format[i]);
-				num_arguments_printed++;
+				num_arguments_printed += 2;
 			}
 		}
 		else
