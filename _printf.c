@@ -1,51 +1,50 @@
 #include "main.h"
-
 /**
  * _printf - function that produces output
  * according to a format.
  * @format: is character string.
  * Return: number of arguments printed so far.
  */
-
 int _printf(const char *format, ...)
 {
-	int i = 0, num_arguments_printed = 0;
-	va_list ap;
-	int (*specifiers)(va_list) = NULL;
+	int count = 0, (*function)(va_list) = NULL;
+	va_list args;
 
-	if ((format == NULL) || (format[0] == '%' && format[1] == '\0'))
+	if (format == NULL || (format[0] == '%' && format[1] == '\0'))
 		return (-1);
-	va_start(ap, format);
-	while (format[i])
+	va_start(args, format);
+	while (*format)
 	{
-		if (format[i] == '%' && format[i + 1] != '%')
+		if (*format == '%')
 		{
-			i++;
-			specifiers = get_specifier(format);
-			if (format[i] == '\0')
-				return (-1);
-			else if (specifiers == NULL)
+			format++;
+			if (*format == '%')
 			{
-				putchar(format[i - 1]);
-				putchar(format[i]);
-				num_arguments_printed += 2;
+				putchar('%');
+				count++;
 			}
 			else
-				num_arguments_printed += specifiers(ap);
-		}
-		else if (format[i] == '%' && format[i + 1] == '%')
-		{
-			i++;
-			putchar('%');
-			num_arguments_printed++;
+			{
+				function = get_specifier(format);
+				if (function == NULL)
+				{
+					putchar(*(format - 1));
+					putchar(*format);
+					count += 2;
+				}
+				else
+				{
+					count += function(args);
+				}
+			}
 		}
 		else
 		{
-			putchar(format[i]);
-			num_arguments_printed++;
+			putchar(*format);
+			count++;
 		}
-	i++;
+		format++;
 	}
-	va_end(ap);
-	return (num_arguments_printed);
+	va_end(args);
+	return (count);
 }
