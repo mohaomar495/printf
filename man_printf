@@ -1,0 +1,41 @@
+Man page for printf function:
+
+NAME:
+ printf - formatted output conversion function
+
+SYNOPSIS:
+ #include "main.h"
+ #include <stdarg.h>
+
+ int printf(const char *format, ...);
+
+DESCRIPTION:
+ The printf() function prints output according to a format string. The function converts, formats, and prints the arguments specified by the optional variable argument list in the format string.
+
+  The function returns the number of characters printed excluding the null byte used to end the output to the stream. If an error occurs in the output function, a negative value is returned.
+
+RETURN VALUE:
+ The number of characters printed excluding the null byte used to end the output to the stream.
+
+EXAMPLES:
+ To print a character:
+  char ch = 'G';
+  printf("%c\n", ch);
+ 
+ To print a string:
+  char* str = "Hello, world!";
+  printf("%s\n", str);
+
+ To print integers, use %d (for base 10), %o (for base 8), %x (for base 16) or %u (for unsigned decimal).
+  int intnum = 27;
+  printf("%d\n", intnum);
+  
+ To print multiple arguments:
+  char ch = 'G';
+  char* str = "Hello, world!";
+  int intnum = 27;
+  printf("%c %s %d\n", ch, str, intnum);
+
+COLLABORATORS:
+ This project was developed by Mohammad Adde and Mohamed Ibar.
+
