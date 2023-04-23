@@ -28,6 +28,10 @@ int _printf(const char *format, ...)
 			else if (format[i] == 's')
 			{
 				str_arg = va_arg(args, char*);
+				if (str_arg == NULL)
+				{
+					printf("(null)");
+				}
 				fputs(str_arg, stdout);
 				num_arguments_printed += strlen(str_arg);
 			}
