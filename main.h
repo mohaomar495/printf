@@ -23,5 +23,6 @@ int print_integer(va_list ap);
 int print_character(va_list ap);
 int print_string(va_list ap);
 int print_decimal(va_list ap);
+void print_binary(unsigned int num);
 
 #endif /*MAIN_H*/
