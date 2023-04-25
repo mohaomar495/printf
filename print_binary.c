@@ -25,4 +25,10 @@ void print_binary(unsigned int num)
 	{
 		printf("%d", binary[j]);
 	}
+	if (i == 0)
+	{
+	i++;
+	putchar('0');
+	}
 }
+
